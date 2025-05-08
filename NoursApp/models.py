@@ -25,7 +25,7 @@ class Reservation(models.Model):
         return f"{self.name} - {self.date} {self.time}"
 
 # Model for dishes
-class Dish(models.Model):
+class dishe(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=6, decimal_places=2)
@@ -43,7 +43,7 @@ class Order(models.Model):
     ]
 
     table = models.ForeignKey(Table, on_delete=models.CASCADE)
-    dishes = models.ManyToManyField(Dish)
+    dishes = models.ManyToManyField(dishe)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
     timestamp = models.DateTimeField(auto_now_add=True)
 

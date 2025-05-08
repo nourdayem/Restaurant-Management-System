@@ -2,10 +2,6 @@ from django.shortcuts import render
 
 from django.http import HttpResponse
 
-def customer(request):
+def homepage(request):
 
-    pass
-
-def waitstaff(request):
-
-    pass
+    return render(request, 'general/homepage.html')
