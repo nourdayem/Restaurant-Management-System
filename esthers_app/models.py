@@ -38,13 +38,6 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Order #{self.id} - {self.status}"
-class OrderItem(models.Model):
-    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
-    menu_item = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=1)
-
-    def __str__(self):
-        return f"{self.quantity} x {self.menu_item.name}"
 
 # 3. OrderItem model for line items in an order
 class OrderItem(models.Model):

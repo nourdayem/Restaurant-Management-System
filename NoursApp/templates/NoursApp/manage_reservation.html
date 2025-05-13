@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Table</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff6b35;
+            --secondary: #2e282a;
+            --light: #f7f7f7;
+            --dark: #1a1a1a;
+            --success: #17b978;
+            --warning: #ffcc00;
+            --danger: #ff3860;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header styles */
+        header {
+            background-color: var(--secondary);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            font-size: 28px;
+            color: var(--primary);
+            margin-left: 10px;
+        }
+        
+        .nav-menu {
+            display: flex;
+        }
+        
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .nav-menu a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Main content styles */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            flex: 1;
+        }
+        
+        .page-title {
+            font-size: 32px;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .card-header {
+            background-color: var(--secondary);
+            color: white;
+            padding: 15px 20px;
+            font-size: 18px;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        /* Form styles */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            background-color: #e55a2b;
+        }
+        
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        table th, table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        table th {
+            background-color: #f5f5f5;
+        }
+        
+        /* Status badges */
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .badge-pending {
+            background-color: var(--warning);
+            color: var(--dark);
+        }
+        
+        .badge-confirmed {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .badge-cancelled {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        /* Messages */
+        .message {
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        
+        .message-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .message-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        /* Action buttons */
+        .action-btn {
+            padding: 5px 10px;
+            margin-right: 5px;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+        }
+        
+        .action-btn-edit {
+            background-color: #17a2b8;
+        }
+        
+        .action-btn-confirm {
+            background-color: var(--success);
+        }
+        
+        .action-btn-cancel {
+            background-color: var(--danger);
+        }
+        
+        /* Edit form styles */
+        .edit-form {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        
+        /* Footer styles */
+        footer {
+            background-color: var(--secondary);
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        /* Two-column layout */
+        @media (min-width: 768px) {
+            .two-column-grid {
+                display: grid;
+                grid-template-columns: 1fr 2fr;
+                gap: 30px;
+            }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            .nav-menu {
+                margin-top: 15px;
+                justify-content: center;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            .buttons-section {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .manage-link {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <h1>Restaurant Management</h1>
+            </div>
+            <nav class="nav-menu">
+                <a href="/"><i class="fas fa-home"></i> Home</a>
+                <a href="/menu/"><i class="fas fa-utensils"></i> Menu</a>
+                <a href="/Customer/CreateReservation"><i class="fas fa-calendar-plus"></i> Book Table</a>
+                <a href="/Customer/ManageReservation"><i class="fas fa-calendar-alt"></i> Manage Booking</a>
+                <a href="/WaitStaff"><i class="fas fa-user-tie"></i> Wait Staff</a>
+                <a href="/Kitchen"><i class="fas fa-fire"></i> Kitchen</a>
+                <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="container">
+        <h1 class="page-title">Manage Your Reservations</h1>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message {% if message.tags == 'success' %}message-success{% elif message.tags == 'error' %}message-error{% elif message.tags == 'warning' %}message-warning{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        <div class="two-column-grid">
+            <div>
+                <!-- Create New Reservation -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Book a New Table</h2>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="name">Your Name</label>
+                                <input type="text" id="name" name="name" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact_info">Contact Information</label>
+                                <input type="text" id="contact_info" name="contact_info" class="form-control" required placeholder="Phone or Email">
+                            </div>
+                            <div class="form-group">
+                                <label for="date">Date</label>
+                                <input type="date" id="date" name="date" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="time">Time</label>
+                                <input type="time" id="time" name="time" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="guests">Number of Guests</label>
+                                <input type="number" id="guests" name="guests" class="form-control" min="1" required>
+                            </div>
+                            <button type="submit" class="btn"><i class="fas fa-calendar-plus"></i> Book a Table</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Find Your Reservation -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Find Your Reservation</h2>
+                    </div>
+                    <div class="card-body">
+                        <form method="get">
+                            <div class="form-group">
+                                <label for="confirmation_code">Confirmation Code</label>
+                                <input type="text" id="confirmation_code" name="confirmation_code" class="form-control" required>
+                                <small>Enter the confirmation code you received when making the reservation.</small>
+                            </div>
+                            <button type="submit" name="find_reservation" value="1" class="btn"><i class="fas fa-search"></i> Find My Reservation</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div>
+                <!-- Reservations List -->
+                {% if found %}
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Your Reservations</h2>
+                        </div>
+                        <div class="card-body">
+                            {% if reservations %}
+                                <div style="overflow-x: auto;">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Time</th>
+                                                <th>Guests</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for reservation in reservations %}
+                                                <tr id="reservation-{{ reservation.id }}">
+                                                    <td>{{ reservation.date }}</td>
+                                                    <td>{{ reservation.time }}</td>
+                                                    <td>{{ reservation.guests }}</td>
+                                                    <td>
+                                                        <span class="badge 
+                                                            {% if reservation.status == 'Confirmed' %}badge-confirmed
+                                                            {% elif reservation.status == 'Pending' %}badge-pending
+                                                            {% else %}badge-cancelled{% endif %}">
+                                                            {{ reservation.status }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        {% if reservation.status != 'Cancelled' %}
+                                                            <button type="button" onclick="showEditForm({{ reservation.id }})" class="action-btn action-btn-edit">
+                                                                <i class="fas fa-edit"></i> Edit
+                                                            </button>
+                                                            
+                                                            <form method="post" style="display: inline;">
+                                                                {% csrf_token %}
+                                                                <input type="hidden" name="reservation_id" value="{{ reservation.id }}">
+                                                                <input type="hidden" name="confirmation_code" value="{{ confirmation_code }}">
+                                                                
+                                                                {% if reservation.status == 'Pending' %}
+                                                                    <button type="submit" name="action" value="confirm" class="action-btn action-btn-confirm">
+                                                                        <i class="fas fa-check"></i> Confirm
+                                                                    </button>
+                                                                {% endif %}
+                                                                
+                                                                <button type="submit" name="action" value="cancel" class="action-btn action-btn-cancel">
+                                                                    <i class="fas fa-times"></i> Cancel
+                                                                </button>
+                                                            </form>
+                                                            
+                                                            <!-- Edit form (hidden by default) -->
+                                                            <div id="edit-form-{{ reservation.id }}" class="edit-form">
+                                                                <h4>Update Reservation</h4>
+                                                                <form method="post">
+                                                                    {% csrf_token %}
+                                                                    <input type="hidden" name="reservation_id" value="{{ reservation.id }}">
+                                                                    <input type="hidden" name="confirmation_code" value="{{ confirmation_code }}">
+                                                                    <input type="hidden" name="action" value="update">
+                                                                    
+                                                                    <div class="form-group">
+                                                                        <label for="new_date_{{ reservation.id }}">New Date</label>
+                                                                        <input type="date" id="new_date_{{ reservation.id }}" name="new_date" class="form-control" value="{{ reservation.date|date:'Y-m-d' }}">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="new_time_{{ reservation.id }}">New Time</label>
+                                                                        <input type="time" id="new_time_{{ reservation.id }}" name="new_time" class="form-control" value="{{ reservation.time|time:'H:i' }}">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="new_guests_{{ reservation.id }}">Number of Guests</label>
+                                                                        <input type="number" id="new_guests_{{ reservation.id }}" name="new_guests" class="form-control" min="1" value="{{ reservation.guests }}">
+                                                                    </div>
+                                                                    <div>
+                                                                        <button type="submit" class="btn"><i class="fas fa-save"></i> Save Changes</button>
+                                                                        <button type="button" onclick="hideEditForm({{ reservation.id }})" class="action-btn"><i class="fas fa-times"></i> Cancel</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        {% else %}
+                                                            <span class="action-btn action-btn-cancel" style="opacity: 0.6; cursor: not-allowed;">
+                                                                <i class="fas fa-ban"></i> Cancelled
+                                                            </span>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% else %}
+                                <p>No reservations found with this confirmation code.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+                
+                <!-- Information about Reservations -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Reservation Information</h2>
+                    </div>
+                    <div class="card-body">
+                        <p>Welcome to our reservation system! Here's what you need to know:</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>You'll receive a unique confirmation code when booking a table.</li>
+                            <li>Use this code to manage your reservation at any time.</li>
+                            <li>Reservations can be modified up to 2 hours before your scheduled time.</li>
+                            <li>For parties of 8 or more, please contact us directly.</li>
+                            <li>We hold reservations for 15 minutes past the scheduled time.</li>
+                        </ul>
+                        <p style="margin-top: 15px;">For any special requests or assistance, please call us at (555) 123-4567.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 The Restaurant Management System</p>
+    </footer>
+    
+    <script>
+        // Function to show edit form
+        function showEditForm(reservationId) {
+            document.getElementById(`edit-form-${reservationId}`).style.display = 'block';
+        }
+        
+        // Function to hide edit form
+        function hideEditForm(reservationId) {
+            document.getElementById(`edit-form-${reservationId}`).style.display = 'none';
+        }
+        
+        // Set the date input's min attribute to today
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        
+        // Apply to all date inputs
+        const dateInputs = document.querySelectorAll('input[type="date"]');
+        dateInputs.forEach(input => {
+            input.min = `${yyyy}-${mm}-${dd}`;
+        });
+    </script>
+</body>
+</html>

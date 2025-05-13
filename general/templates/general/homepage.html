@@ -57,12 +57,9 @@
             margin-left: 10px;
         }
         
-        .logo img {
-            height: 40px;
-        }
-        
         .nav-menu {
             display: flex;
+            flex-wrap: wrap;
         }
         
         .nav-menu a {
@@ -89,7 +86,7 @@
         
         /* Hero section */
         .hero {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://unsplash.com/photos/SwOK4zeDMzg/download?ixid=M3wxMjA3fDB8MXxzZWFyY2h8MTh8fHJlc3RhdXJhbnQlMjBmb29kJTIwMTYwMHg4MDB8ZW58MHx8fHwxNzQ2NzQ0NDgyfDA&force=true');
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cmVzdGF1cmFudHxlbnwwfHwwfHw%3D&w=1000&q=80');
             background-size: cover;
             background-position: center;
             color: white;
@@ -153,6 +150,60 @@
             color: var(--dark);
         }
         
+        /* Reservation cards section */
+        .reservation-cards {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 50px 20px;
+            flex-wrap: wrap;
+        }
+        
+        .reservation-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .reservation-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .res-card-header {
+            padding: 30px 20px;
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .res-card-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        .res-card-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .res-card-body {
+            padding: 30px 20px;
+        }
+        
+        .res-card-text {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
         /* Access cards section */
         .access-section {
             padding: 80px 20px;
@@ -211,6 +262,34 @@
         .card-text {
             color: #666;
             margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        /* Features section */
+        .features-section {
+            background-color: #f7f7f7;
+            padding: 80px 20px;
+        }
+        
+        .feature-item {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .feature-icon {
+            font-size: 36px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .feature-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+        
+        .feature-description {
+            color: #666;
             line-height: 1.6;
         }
         
@@ -315,6 +394,11 @@
                 margin-bottom: 10px;
                 text-align: center;
             }
+            
+            .reservation-cards {
+                flex-direction: column;
+                align-items: center;
+            }
         }
     </style>
 </head>
@@ -326,11 +410,15 @@
                 <h1>The Restaurant</h1>
             </div>
             <nav class="nav-menu">
-                <a href="#">Home</a>
-                <a href="#">Menu</a>
-                <a href="#">About</a>
-                <a href="#">Contact</a>
-                <a href="booking.html" class="btn-book">Book a Table</a>
+                <a href="/"><i class="fas fa-home"></i> Home</a>
+                <a href="/menu/"><i class="fas fa-utensils"></i> Menu</a>
+                <a href="#about"><i class="fas fa-info-circle"></i> About</a>
+                <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
+                <a href="/Customer/ManageReservation" class="btn-book"><i class="fas fa-calendar-plus"></i> Book a Table</a>
+                <!-- Staff Links - Updated to point to login pages -->
+                <a href="/WaitStaffLogin"><i class="fas fa-user-tie"></i> Wait Staff</a>
+                <a href="/KitchenLogin"><i class="fas fa-fire"></i> Kitchen</a>
+                <a href="/admin"><i class="fas fa-lock"></i> Admin</a>
             </nav>
         </div>
     </header>
@@ -339,61 +427,143 @@
     <section class="hero">
         <div class="hero-content">
             <h2>Welcome to The Restaurant</h2>
-            <p>Experience exceptional dining with our carefully crafted menu. Whether you're a customer looking to book a table or staff accessing the management system, we're here to provide you with the best service.</p>
+            <p>Experience exceptional dining with our carefully crafted menu. Place orders, make reservations, and enjoy a seamless dining experience.</p>
             <div class="hero-buttons">
-                <a href="booking.html" class="btn btn-primary" id="bookTableBtn">Book a Table</a>
-                <a href="#access-section" class="btn btn-outline" id="accessSystemBtn">Access System</a>
+                <a href="/menu/" class="btn btn-primary"><i class="fas fa-utensils"></i> View Menu</a>
+                <a href="#reservation-cards" class="btn btn-outline"><i class="fas fa-calendar-alt"></i> Reservations</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Reservation Cards Section -->
+    <section id="reservation-cards" class="reservation-cards">
+        <div class="reservation-card">
+            <div class="res-card-header">
+                <div class="res-card-icon">
+                    <i class="fas fa-calendar-plus"></i>
+                </div>
+                <h3 class="res-card-title">New Reservation</h3>
+            </div>
+            <div class="res-card-body">
+                <p class="res-card-text">Book a new table at our restaurant. Select your preferred date, time, and number of guests.</p>
+                <a href="/Customer/ManageReservation" class="btn btn-primary">Book Now</a>
+            </div>
+        </div>
+        
+        <div class="reservation-card">
+            <div class="res-card-header">
+                <div class="res-card-icon">
+                    <i class="fas fa-edit"></i>
+                </div>
+                <h3 class="res-card-title">Manage Reservation</h3>
+            </div>
+            <div class="res-card-body">
+                <p class="res-card-text">View, modify, or cancel your existing reservation using your confirmation code.</p>
+                <a href="/Customer/ManageReservation" class="btn btn-primary">Manage Booking</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="section-title">Our Services</div>
+        <div class="cards-container">
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <h3 class="feature-title">Quality Cuisine</h3>
+                <p class="feature-description">Enjoy our extensive menu featuring a variety of dishes, including vegetarian and gluten-free options.</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <h3 class="feature-title">Easy Ordering</h3>
+                <p class="feature-description">Easily place your orders with customization options and special instructions.</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <h3 class="feature-title">Table Reservations</h3>
+                <p class="feature-description">Book your table in advance to ensure a smooth dining experience.</p>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon">
+                    <i class="fas fa-glass-cheers"></i>
+                </div>
+                <h3 class="feature-title">Special Events</h3>
+                <p class="feature-description">Host your special occasions with us. We offer catering services for all events.</p>
             </div>
         </div>
     </section>
     
     <!-- Access Cards Section -->
     <section class="access-section" id="access-section">
-        <h2 class="section-title">Restaurant Management System</h2>
+        <h2 class="section-title">Customer & Staff Services</h2>
         <div class="cards-container">
+            <!-- Customer services cards -->
             <div class="access-card">
                 <div class="card-header">
                     <div class="card-icon">
-                        <i class="fas fa-utensils"></i>
+                        <i class="fas fa-calendar-alt"></i>
                     </div>
-                    <h3 class="card-title">Customer</h3>
+                    <h3 class="card-title">Book a Table</h3>
                 </div>
                 <div class="card-body">
-                    <p class="card-text">Reserve a table, check our menu, and enjoy a memorable dining experience at The Restaurant.</p>
-                    <a href="booking.html" class="btn btn-primary" id="customerAccess">Book a Table</a>
+                    <p class="card-text">Make a new reservation for your visit to our restaurant.</p>
+                    <a href="/Customer/ManageReservation" class="btn btn-primary">Book Now</a>
                 </div>
             </div>
             
+            <div class="access-card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                    <h3 class="card-title">Manage Reservation</h3>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">View, modify, or cancel your existing reservation using your confirmation code.</p>
+                    <a href="/Customer/ManageReservation" class="btn btn-primary">Manage Booking</a>
+                </div>
+            </div>
+            
+            <!-- Staff services cards - Updated to point to login pages -->
             <div class="access-card">
                 <div class="card-header">
                     <div class="card-icon">
                         <i class="fas fa-user-tie"></i>
                     </div>
-                    <h3 class="card-title">Manager</h3>
+                    <h3 class="card-title">Wait Staff</h3>
                 </div>
                 <div class="card-body">
-                    <p class="card-text">Access the restaurant management system to oversee operations, staff, inventory, and reports.</p>
-                    <a href="manager-login.html" class="btn btn-primary" id="managerLogin">Manager Login</a>
+                    <p class="card-text">For waitstaff - view and serve orders ready for serving.</p>
+                    <a href="/WaitStaffLogin" class="btn btn-primary">Staff Login</a>
                 </div>
             </div>
             
             <div class="access-card">
                 <div class="card-header">
                     <div class="card-icon">
-                        <i class="fas fa-user"></i>
+                        <i class="fas fa-fire"></i>
                     </div>
-                    <h3 class="card-title">Staff</h3>
+                    <h3 class="card-title">Kitchen</h3>
                 </div>
                 <div class="card-body">
-                    <p class="card-text">Access the system to manage orders, tables, and provide excellent service to our customers.</p>
-                    <a href="staff-login.html" class="btn btn-primary" id="staffLogin">Staff Login</a>
+                    <p class="card-text">For kitchen staff - view and prepare pending orders.</p>
+                    <a href="/KitchenLogin" class="btn btn-primary">Staff Login</a>
                 </div>
             </div>
         </div>
     </section>
     
     <!-- Footer -->
-    <footer>
+    <footer id="contact">
         <div class="footer-container">
             <div class="footer-section">
                 <h3>About Us</h3>
@@ -437,11 +607,13 @@
     </footer>
     
     <script>
-        // Smooth scroll for access system button
-        document.getElementById('accessSystemBtn').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.getElementById('access-section').scrollIntoView({
-                behavior: 'smooth'
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
             });
         });
     </script>

@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitchen Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff6b35;
+            --secondary: #2e282a;
+            --light: #f7f7f7;
+            --dark: #1a1a1a;
+            --success: #17b978;
+            --warning: #ffcc00;
+            --danger: #ff3860;
+            --info: #3273dc;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header styles */
+        header {
+            background-color: var(--secondary);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            font-size: 28px;
+            color: var(--primary);
+            margin-left: 10px;
+        }
+        
+        .nav-menu {
+            display: flex;
+        }
+        
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .nav-menu a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Main content styles */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            flex: 1;
+        }
+        
+        .page-title {
+            font-size: 32px;
+            color: var(--secondary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        /* Grid layout for order sections */
+        .orders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .card-header {
+            padding: 15px 20px;
+            font-size: 18px;
+            color: white;
+        }
+        
+        .card-header-pending {
+            background-color: var(--info);
+        }
+        
+        .card-header-preparing {
+            background-color: var(--warning);
+            color: var(--dark);
+        }
+        
+        .card-header-ready {
+            background-color: var(--success);
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        /* Order card styles */
+        .order-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            padding: 15px;
+            position: relative;
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .order-id {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .order-time {
+            color: #777;
+            font-size: 14px;
+        }
+        
+        .order-table {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .order-items {
+            margin-bottom: 15px;
+        }
+        
+        .order-items h4 {
+            margin-bottom: 5px;
+        }
+        
+        .dish-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .dish-list li {
+            padding: 5px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        
+        .dish-list li:last-child {
+            border-bottom: none;
+        }
+        
+        /* Special instructions and dietary restrictions */
+        .special-instructions, .dietary-restrictions {
+            font-size: 14px;
+            margin-top: 3px;
+            margin-left: 10px;
+        }
+        
+        /* Allergy warning */
+        .allergy-warning {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background-color: #fff3cd;
+            border-left: 3px solid #ffc107;
+            font-size: 14px;
+            border-radius: 4px;
+        }
+        
+        /* Timer styles */
+        .order-timer {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+        
+        .timer-label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .timer-value {
+            color: var(--danger);
+        }
+        
+        /* Button styles */
+        .btn {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #e55a2b;
+        }
+        
+        .btn-start {
+            background-color: var(--info);
+        }
+        
+        .btn-start:hover {
+            background-color: #2a62bc;
+        }
+        
+        .btn-ready {
+            background-color: var(--success);
+        }
+        
+        .btn-ready:hover {
+            background-color: #14a269;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning);
+            color: var(--dark);
+        }
+        
+        .btn-warning:hover {
+            background-color: #e5b800;
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        /* Messages */
+        .message {
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        
+        .message-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .message-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+        
+        .message-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+        }
+        
+        .empty-state i {
+            font-size: 40px;
+            margin-bottom: 10px;
+            color: #ccc;
+        }
+        
+        /* Footer styles */
+        footer {
+            background-color: var(--secondary);
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 100;
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        .modal-title {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            .nav-menu {
+                margin-top: 15px;
+                justify-content: center;
+            }
+            
+            .orders-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <h1>Restaurant Management</h1>
+            </div>
+            <nav class="nav-menu">
+                <a href="/"><i class="fas fa-home"></i> Home</a>
+                <a href="/restaurant/Customer/ManageReservation"><i class="fas fa-calendar-alt"></i> Reservations</a>
+                <a href="/restaurant/WaitStaff"><i class="fas fa-utensils"></i> Waitstaff</a>
+                <a href="/restaurant/Kitchen"><i class="fas fa-fire"></i> Kitchen</a>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="container">
+        <h1 class="page-title">Kitchen Dashboard</h1>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message {% if message.tags == 'success' %}message-success{% elif message.tags == 'warning' %}message-warning{% elif message.tags == 'error' %}message-error{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        <div class="orders-grid">
+            <!-- Pending Orders Section -->
+            <div class="card">
+                <div class="card-header card-header-pending">
+                    <h2><i class="fas fa-hourglass-start"></i> Pending Orders</h2>
+                </div>
+                <div class="card-body">
+                    {% if pending_orders %}
+                        {% for order in pending_orders %}
+                            <div class="order-card">
+                                <div class="order-header">
+                                    <div class="order-id">Order #{{ order.id }}</div>
+                                    <div class="order-time">{{ order.timestamp }}</div>
+                                </div>
+                                <div class="order-table">
+                                    <i class="fas fa-chair"></i> Table {{ order.table_number }}
+                                </div>
+                                <div class="order-items">
+                                    <h4>Items:</h4>
+                                    <ul class="dish-list">
+                                        {% for item in order.food_items.all %}
+                                            <li>
+                                                <strong>{{ item.dish_name }}</strong> (x{{ item.quantity }})
+                                                {% if item.special_instructions %}
+                                                    <div class="special-instructions">
+                                                        <strong>Special:</strong> {{ item.special_instructions }}
+                                                    </div>
+                                                {% endif %}
+                                                {% if item.dietary_restrictions %}
+                                                    <div class="dietary-restrictions">
+                                                        <strong>Dietary:</strong> {{ item.dietary_restrictions }}
+                                                    </div>
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% if order.allergy_info %}
+                                        <div class="allergy-warning">
+                                            <strong>⚠️ Allergies:</strong> {{ order.allergy_info }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="order_id" value="{{ order.id }}">
+                                    <input type="hidden" name="action" value="start_preparation">
+                                    <button type="submit" class="btn btn-start btn-block">
+                                        <i class="fas fa-utensils"></i> Start Preparing
+                                    </button>
+                                </form>
+                                <button onclick="openShortageModal('{{ order.id }}')" class="btn btn-warning btn-block">
+                                    <i class="fas fa-exclamation-triangle"></i> Report Ingredient Shortage
+                                </button>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="fas fa-check-circle"></i>
+                            <p>No pending orders at this time.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- In Preparation Section -->
+            <div class="card">
+                <div class="card-header card-header-preparing">
+                    <h2><i class="fas fa-fire"></i> In Preparation</h2>
+                </div>
+                <div class="card-body">
+                    {% if preparing_orders %}
+                        {% for order in preparing_orders %}
+                            <div class="order-card">
+                                <div class="order-header">
+                                    <div class="order-id">Order #{{ order.id }}</div>
+                                    <div class="order-time">{{ order.timestamp }}</div>
+                                </div>
+                                <div class="order-table">
+                                    <i class="fas fa-chair"></i> Table {{ order.table_number }}
+                                </div>
+                                <div class="order-items">
+                                    <h4>Items:</h4>
+                                    <ul class="dish-list">
+                                        {% for item in order.food_items.all %}
+                                            <li>
+                                                <strong>{{ item.dish_name }}</strong> (x{{ item.quantity }})
+                                                {% if item.special_instructions %}
+                                                    <div class="special-instructions">
+                                                        <strong>Special:</strong> {{ item.special_instructions }}
+                                                    </div>
+                                                {% endif %}
+                                                {% if item.dietary_restrictions %}
+                                                    <div class="dietary-restrictions">
+                                                        <strong>Dietary:</strong> {{ item.dietary_restrictions }}
+                                                    </div>
+                                                {% endif %}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% if order.allergy_info %}
+                                        <div class="allergy-warning">
+                                            <strong>⚠️ Allergies:</strong> {{ order.allergy_info }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="order-timer">
+                                    <span class="timer-label">Time in preparation:</span>
+                                    <span class="timer-value" id="timer-{{ order.id }}">Calculating...</span>
+                                </div>
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="order_id" value="{{ order.id }}">
+                                    <input type="hidden" name="action" value="mark_ready">
+                                    <button type="submit" class="btn btn-ready btn-block">
+                                        <i class="fas fa-check-circle"></i> Mark as Ready
+                                    </button>
+                                </form>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="fas fa-check-circle"></i>
+                            <p>No orders in preparation at this time.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Ready Orders Section -->
+            <div class="card">
+                <div class="card-header card-header-ready">
+                    <h2><i class="fas fa-clipboard-check"></i> Ready for Serving</h2>
+                </div>
+                <div class="card-body">
+                    {% if ready_orders %}
+                        {% for order in ready_orders %}
+                            <div class="order-card">
+                                <div class="order-header">
+                                    <div class="order-id">Order #{{ order.id }}</div>
+                                    <div class="order-time">{{ order.timestamp }}</div>
+                                </div>
+                                <div class="order-table">
+                                    <i class="fas fa-chair"></i> Table {{ order.table_number }}
+                                </div>
+                                <div class="order-items">
+                                    <h4>Items:</h4>
+                                    <ul class="dish-list">
+                                        {% for item in order.food_items.all %}
+                                            <li>
+                                                <strong>{{ item.dish_name }}</strong> (x{{ item.quantity }})
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% if order.allergy_info %}
+                                        <div class="allergy-warning">
+                                            <strong>⚠️ Allergies:</strong> {{ order.allergy_info }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div style="text-align: center; margin-top: 10px;">
+                                    <span class="badge badge-ready" style="font-size: 14px; padding: 8px 15px;">
+                                        <i class="fas fa-bell"></i> Ready for Pickup
+                                    </span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="fas fa-check-circle"></i>
+                            <p>No orders ready for serving at this time.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Ingredient Shortage Modal -->
+    <div id="shortageModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeShortageModal()">&times;</span>
+            <h2 class="modal-title">Report Ingredient Shortage</h2>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="order_id" id="shortage_order_id">
+                <input type="hidden" name="action" value="report_shortage">
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label for="missing_item" style="display: block; margin-bottom: 5px; font-weight: bold;">Missing Ingredient</label>
+                    <input type="text" id="missing_item" name="missing_item" class="form-control" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" required>
+                </div>
+                <button type="submit" class="btn btn-warning"><i class="fas fa-exclamation-triangle"></i> Report Shortage</button>
+                <button type="button" class="btn" onclick="closeShortageModal()" style="background-color: #6c757d;">Cancel</button>
+            </form>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 The Restaurant Management System</p>
+    </footer>
+    
+    <script>
+        // Auto-refresh the page every 30 seconds
+        setTimeout(function() {
+            location.reload();
+        }, 30000);
+        
+        // Timer for orders in preparation
+        document.addEventListener('DOMContentLoaded', function() {
+            {% for order in preparing_orders %}
+                // Calculate time in preparation
+                const orderTime = new Date('{{ order.timestamp|date:"Y-m-d H:i:s" }}');
+                updateTimer('timer-{{ order.id }}', orderTime);
+                setInterval(function() {
+                    updateTimer('timer-{{ order.id }}', orderTime);
+                }, 1000);
+            {% endfor %}
+        });
+        
+        function updateTimer(id, startTime) {
+            const now = new Date();
+            const diffInSeconds = Math.floor((now - startTime) / 1000);
+            
+            const hours = Math.floor(diffInSeconds / 3600);
+            const minutes = Math.floor((diffInSeconds % 3600) / 60);
+            const seconds = diffInSeconds % 60;
+            
+            let timeString = '';
+            if (hours > 0) {
+                timeString += hours + 'h ';
+            }
+            timeString += minutes + 'm ' + seconds + 's';
+            
+            document.getElementById(id).textContent = timeString;
+            
+            // Add warning color if preparation takes too long
+            if (diffInSeconds > 900) { // 15 minutes
+                document.getElementById(id).style.color = '#ff3860';
+                document.getElementById(id).style.fontWeight = 'bold';
+            }
+        }
+        
+        // Modal functions
+        function openShortageModal(orderId) {
+            document.getElementById('shortage_order_id').value = orderId;
+            document.getElementById('shortageModal').style.display = 'block';
+        }
+        
+        function closeShortageModal() {
+            document.getElementById('shortageModal').style.display = 'none';
+        }
+        
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('shortageModal')) {
+                closeShortageModal();
+            }
+        }
+    </script>
+</body>
+</html>
