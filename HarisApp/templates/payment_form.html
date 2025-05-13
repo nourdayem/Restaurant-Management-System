@@ -1,0 +1,13 @@
+<!-- templates/payment_form.html -->
+<form method="POST">
+    {% csrf_token %}
+    <label for="amount">Amount:</label>
+    <input type="text" id="amount" name="amount" required><br>
+    <label for="payment_method">Payment Method:</label>
+    <select name="payment_method" id="payment_method" required>
+        <option value="CASH">Cash</option>
+        <option value="CARD">Credit/Debit Card</option>
+        <option value="ONLINE">Online Payment</option>
+    </select><br>
+    <button type="submit">Submit Payment</button>
+</form>

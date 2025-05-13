@@ -1,0 +1,18 @@
+<!-- templates/staff_list.html -->
+<h2>Staff List</h2>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Role</th>
+        <th>Phone</th>
+        <th>Email</th>
+    </tr>
+    {% for member in staff %}
+        <tr>
+            <td>{{ member.name }}</td>
+            <td>{{ member.get_role_display }}</td>
+            <td>{{ member.phone }}</td>
+            <td>{{ member.email }}</td>
+        </tr>
+    {% endfor %}
+</table>

@@ -1,0 +1,18 @@
+<!-- templates/order_list.html -->
+<h2>Sales Orders</h2>
+<table>
+    <tr>
+        <th>Customer Name</th>
+        <th>Items</th>
+        <th>Total Price</th>
+        <th>Status</th>
+    </tr>
+    {% for order in orders %}
+        <tr>
+            <td>{{ order.customer_name }}</td>
+            <td>{{ order.items }}</td>
+            <td>{{ order.total_price }}</td>
+            <td>{{ order.get_status_display }}</td>
+        </tr>
+    {% endfor %}
+</table>

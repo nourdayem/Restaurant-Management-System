@@ -1,0 +1,5 @@
+<!-- templates/payment_success.html -->
+<h2>Payment Successful</h2>
+<p>Payment for Order {{ payment.order.id }} was successful!</p>
+<p>Amount Paid: {{ payment.amount }}</p>
+<p>Payment Method: {{ payment.get_payment_method_display }}</p>
