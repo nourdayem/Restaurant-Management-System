@@ -14,7 +14,7 @@ A Django web application for managing restaurant reservations and staff operatio
 | Role | Username | Password |
 |------|----------|----------|
 | Kitchen Staff | `kitchen_staff1` | `kitchenpass123` |
-| Waitstaff | `wait_staff1` | `wait_staff1` |
+| Waitstaff | `wait_staff1` | `waitpass123` |
 | Admin | `admin` | `RAcEVkB6T8` |
 
 ## Quick Start
