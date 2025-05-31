@@ -1,54 +1,65 @@
-Restaurant Management System
+# Restaurant Management System
+
 A Django web application for managing restaurant reservations and staff operations.
-Features
 
-Customer Reservations: Book and manage table reservations with confirmation codes
-Kitchen Dashboard: View and prepare orders
-Waitstaff Dashboard: Serve orders and track completion
-Admin Panel: Full system management
+## Features
 
-Demo Credentials
-RoleUsernamePasswordKitchen Staffkitchen_staff1kitchenpass123Waitstaffwait_staff1wait_staff1AdminadminRAcEVkB6T8
-Quick Start
+- **Customer Reservations**: Book and manage table reservations with confirmation codes
+- **Kitchen Dashboard**: View and prepare orders 
+- **Waitstaff Dashboard**: Serve orders and track completion
+- **Admin Panel**: Full system management
 
-Clone the repository:
-bashgit clone https://github.com/nourdayem/Restaurant-Management-System.git
-cd Restaurant-Management-System
+## Demo Credentials
 
-Install Django and run:
-bashpip install django
-python manage.py migrate
-python manage.py runserver
+| Role | Username | Password |
+|------|----------|----------|
+| Kitchen Staff | `kitchen_staff1` | `kitchenpass123` |
+| Waitstaff | `wait_staff1` | `wait_staff1` |
+| Admin | `admin` | `RAcEVkB6T8` |
 
-Visit: http://127.0.0.1:8000/
-Test with the demo credentials above
+## Quick Start
 
-How to Use
-Customers
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/nourdayem/Restaurant-Management-System.git
+   cd Restaurant-Management-System
+   ```
 
-Go to homepage → "Book a Table"
-Use confirmation code to manage reservations
+2. Install Django and run:
+   ```bash
+   pip install django
+   python manage.py migrate
+   python manage.py runserver
+   ```
 
-Kitchen Staff
+3. Visit: `http://127.0.0.1:8000/`
 
-Login at /KitchenLogin
-View pending orders and mark as ready
+4. Test with the demo credentials above
 
-Waitstaff
+## How to Use
 
-Login at /WaitStaffLogin
-Serve ready orders to customers
+### Customers
+- Go to homepage → "Book a Table"
+- Use confirmation code to manage reservations
 
-Admin
+### Kitchen Staff
+- Login at `/KitchenLogin`
+- View pending orders and mark as ready
 
-Access /admin/ for full system control
+### Waitstaff  
+- Login at `/WaitStaffLogin`
+- Serve ready orders to customers
 
-Technology
+### Admin
+- Access `/admin/` for full system control
 
-Django 4.2
-SQLite Database
-HTML/CSS/JavaScript
-Responsive Design
+## Technology
 
-Author
-Nour Dayem - @nourdayem
+- Django 4.2
+- SQLite Database
+- HTML/CSS/JavaScript
+- Responsive Design
+
+## Author
+
+Nour Dayem - [@nourdayem](https://github.com/nourdayem)
